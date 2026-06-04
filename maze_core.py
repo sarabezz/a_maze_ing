@@ -1,5 +1,6 @@
 # genera el laberinto no depende de nada externo
 from collections import deque
+import random
 
 
 class Cell:
@@ -49,27 +50,27 @@ def generate_maze(maze): # solo generar el laberinto aleatoriamente, vamos const
         row, col = stack[-1] # miramos la celda actual sin sacarla (ult celda)
         current = maze.grid[row][col]
 
-    # buscamos vecinos válidos
-    neighbors = []
-    for direction, (drow, dcol) in DIRECTIONS.items():
-        nrow, ncol = row + drow, col + dcol
-        if 0 <= nrow < maze.height and 0 <= ncol < maze.width:
-            neighbor = maze.grid[nrow][ncol]
-            if not neighbor.visited and not neighbor.blocked:
-                neighbors.append((direction, nrow, ncol)) # tupla [('N', 2, 3), ('E', 1, 4), ('S', 2, 3)]
+        # buscamos vecinos válidos
+        neighbors = []
+        for direction, (drow, dcol) in DIRECTIONS.items():
+            nrow, ncol = row + drow, col + dcol
+            if 0 <= nrow < maze.height and 0 <= ncol < maze.width:
+                neighbor = maze.grid[nrow][ncol]
+                if not neighbor.visited and not neighbor.blocked:
+                    neighbors.append((direction, nrow, ncol)) # tupla [('N', 2, 3), ('E', 1, 4), ('S', 2, 3)]
     
-    if neighbors:
-        direction, nrow, ncol = random.choice(neighbors)
-        neighbor = maze.grid[nrow][ncol]
+        if neighbors:
+            direction, nrow, ncol = random.choice(neighbors)
+            neighbor = maze.grid[nrow][ncol]
 
-        current.walls[direction] = False
-        neighbor.walls[OPPOSITE[direction]] = False
+            current.walls[direction] = False
+            neighbor.walls[OPPOSITE[direction]] = False
 
-        neighbor.visited = True
-        stack.append((nrow, ncol))
+            neighbor.visited = True
+            stack.append((nrow, ncol))
 
-    else:
-        stack.pop()
+        else:
+            stack.pop()
         
 def BFS(maze):
     start = maze.start
@@ -193,3 +194,21 @@ def four2(maze):
         cell.blocked = True
         cell.visited = True
         cell.walls = {'N': True, 'S': True, 'E': True, 'W': True}
+
+def mark_path(maze, path):
+    row, col = maze.start
+    maze.grid[row][col].in_path = True
+    for direction in path:
+        drow, dcol = DIRECTIONS[direction]
+        row += drow
+        col += dcol
+        maze.grid[row][col].in_path = True
+
+def reset_maze(maze):
+    for row in range(maze.height):
+        for col in range(maze.width):
+            cell = maze.grid[row][col]
+            if not cell.blocked:    # no tocamos las celdas del "42"
+                cell.visited = False
+                cell.in_path = False
+                cell.walls = {'N': True, 'S': True, 'E': True, 'W': True}

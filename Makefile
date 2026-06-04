@@ -6,7 +6,7 @@
 #    By: sarabermudez <sarabermudez@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/01/14 13:35:50 by sarabermude       #+#    #+#              #
-#    Updated: 2026/01/14 13:47:05 by sarabermude      ###   ########.fr        #
+#    Updated: 2026/06/04 16:47:44 by sarabermude      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,13 +19,13 @@ all: run
 
 .PHONY: install
 install:
-	@echo "No hay dependencias externas, solo asegúrate de activar tu venv"
-
+	pip install mlx-2.2-py3-ubuntu-any.whl
+	
 run:
-	$(python) $(script)
+	$(python) $(script) config.txt
 
 debug:
-	$(python) -m pbd $(script)
+	$(python) -m pdb $(script) config.txt
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -r {} + || true

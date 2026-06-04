@@ -6,14 +6,14 @@
 #    By: sarabermudez <sarabermudez@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/01/14 13:35:54 by sarabermude       #+#    #+#              #
-#    Updated: 2026/04/12 22:12:18 by sarabermude      ###   ########.fr        #
+#    Updated: 2026/06/03 17:10:35 by sarabermude      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # leer el config, validar parámetros, llamar a maze_core.py, y gestionar errores
 import sys # intercatuar con el sistema, leer argumentos, salir del programa
 import random
-from maze_core import Maze, four2, generate_maze, BFS, save_maze
+from maze_core import Maze, four2, generate_maze, BFS, save_maze, mark_path, DIRECTIONS, OPPOSITE 
 from maze_visual import menu
 
 
@@ -145,6 +145,8 @@ def main():
     if path is None:
         print("Error: path not found between start and end")
         sys.exit(1)
+    
+    mark_path(maze, path)
     
     # guardamos
     save_maze(maze, path, params['output_file'])

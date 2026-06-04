@@ -1,0 +1,8 @@
+# Configuración por defecto del laberinto
+WIDTH=21
+HEIGHT=21
+ENTRY=2,2
+EXIT=3,4
+OUTPUT_FILE=maze.txt
+PERFECT=True
+SEED=42
